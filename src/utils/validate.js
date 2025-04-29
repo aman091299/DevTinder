@@ -1,7 +1,7 @@
 
 const validate=(req)=>{
     const {firstName,gender,skills,lastName,age,about}=req.body;
-    console.log("inside validate",req.body)
+   
     if(firstName?.length > 20  || firstName?.length < 2){
         throw new Error("First name should be between 3 to 10 charactor only");
    }

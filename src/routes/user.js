@@ -57,10 +57,10 @@ userRouter.get("/user/connections",userAuth,async(req,res)=>{
 userRouter.get("/feed",userAuth,async(req,res)=>{
     const USER_VALUES="firstName lastName _id gender dob about skills photoUrl createdAt updatedAt"
     const page=parseInt(req.query.page) || 1;
-    const limit=parseInt(req.query.limit) || 10;
+    let limit=parseInt(req.query.limit) || 10;
     limit=limit > 50 ? 50 : limit;
     const skip=(page-1)*limit;
-    console.log(skip)
+
 
     try {
         const  loggedInUser=req.user;
