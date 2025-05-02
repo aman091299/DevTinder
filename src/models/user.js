@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     minLength: 2,
     maxLength: 20,
+    required:true
   },
   gender: {
     type: String,
@@ -55,11 +56,8 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    validate(value){
-        if(!validator.isStrongPassword(value)){
-            throw new Error("Password is not strong enough. It must contain at least 8 characters, a symbol, a number, and both uppercase and lowercase letters.");
-        }
-    }
+    trim:true,
+    
   },
   photoUrl:{
     type:String,
@@ -68,7 +66,7 @@ const userSchema = new mongoose.Schema({
    skills:{
     type:[String],
     validate(value){
-      if(value?.length < 3 || value?.length >10){
+      if(value?.length < 0 || value?.length >10){
         throw new Error("3 skills must be provide and skill must be less than 10")
       }
   
@@ -105,7 +103,7 @@ userSchema.methods.getJwt=async  function (){
 
   const user=this;
    //generating the json web token
-  var token=await jwt.sign({_id:user._id},"devTinder@123",{expiresIn:'1d'})
+  var token=await jwt.sign({_id:user._id},process.env.SECREAT_KEY,{expiresIn:'1d'})
   
 
   return token;

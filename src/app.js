@@ -1,3 +1,4 @@
+
 const connectDb = require("./config/database");
 const express = require("express");
 const cors=require('cors')
@@ -6,12 +7,17 @@ const authRouter=require('./routes/auth');
 const connectionRouter=require('./routes/connectionRequest');
 const userRouter=require('./routes/user')
 const profileRouter=require('./routes/profile')
+require('dotenv').config()
+
 const app = express();
 
-app.use(cors({
-  origin:"http://localhost:3000",
-  credentials:true,
-}));
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+
 app.use(cookieParser())
 app.use(express.json());
 

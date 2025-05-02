@@ -26,7 +26,7 @@ profileRouter.get('/profile/view',userAuth,async(req,res)=>{
 profileRouter.patch('/profile/edit',userAuth,async(req,res)=>{
    const loggedUserInfo=req.user;
    const userInfo=req.body;
-
+ 
    try {
     const {emailId,password}=req.body;
     if(emailId){

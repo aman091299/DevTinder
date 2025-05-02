@@ -64,7 +64,7 @@ connectionRouter.post('/request/review/:status/:requestId',userAuth,async(req,re
 
     const {status,requestId}=req.params;
 
-    const ALLOWED_FEILD=['accepted','ignored'];
+    const ALLOWED_FEILD=['accepted','rejected'];
     if(!ALLOWED_FEILD.includes(status)){
              throw new Error("Invalid status, status can only be accepted or ignored")
     }
@@ -94,7 +94,7 @@ connectionRouter.post('/request/review/:status/:requestId',userAuth,async(req,re
     }
     catch(error){
         res.status(400).json({
-            message:"Error in accepting or ignoring request" + error
+            message:"Error in accepting or rejecting request" + error
         })
     }
 

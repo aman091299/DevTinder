@@ -18,7 +18,7 @@ const userAuth=async(req,res,next)=>{
     if(!token){
         throw new Error("Token is not there")
       }
-      var decode =jwt.verify(token,"devTinder@123");
+      var decode =jwt.verify(token,process.env.SECREAT_KEY);
       const user=await User.findById(decode?._id);
       if(!user){
         throw new Error("No user founded")
