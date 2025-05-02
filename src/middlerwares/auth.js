@@ -1,16 +1,6 @@
 const User=require("../models/user")
 const jwt=require('jsonwebtoken')
-const adminAuth=(req,res,next)=>{
 
-    const token="xyz"
-    
-    if(token !=='xyz'){
-       res.send("it is not authorize" )
-    }
-   else{
-    next()
-   }
-}
 
 const userAuth=async(req,res,next)=>{
  try {
@@ -34,5 +24,5 @@ const userAuth=async(req,res,next)=>{
 
 
 module.exports={
-    adminAuth,userAuth
+   userAuth
 }
