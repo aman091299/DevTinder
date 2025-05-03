@@ -22,7 +22,8 @@ authRouter.post("/signup", async (req, res) => {
             minSymbols: 1
           
         })){
-            throw new Error("Password is not strong enough. It must contain at least 8 characters, a symbol, a number, and both uppercase and lowercase letters.");
+       
+     throw new Error("Password is not strong enough. It must contain at least 8 characters, a symbol, a number, and both uppercase and lowercase letters.");
         }
     
       
@@ -69,7 +70,13 @@ authRouter.post('/login',async(req,res)=>{
    const token= await user.getJwt();
   
     //setting the cookie to the browser having token
-    res.cookie("token",token, { expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000) ,https:true})
+    res.cookie("token",token, { 
+      expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000) ,
+      https:true,
+      path: "/",
+      sameSite: "None", // Only use with HTTPS
+      secure: true
+    })
     res.status(200).json({
       success:true,
       data:userWithoutPassword
@@ -84,7 +91,6 @@ authRouter.post('/login',async(req,res)=>{
    }
 
   })
-
 authRouter.post('/logout',(req,res)=>{
     res.clearCookie('token',{https:true})
     res.status(200).json({
