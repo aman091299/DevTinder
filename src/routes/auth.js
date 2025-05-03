@@ -39,11 +39,11 @@ authRouter.post("/signup", async (req, res) => {
  //setting the cookie to the browser having token
  res.cookie('token', token, {
   expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-  secure: true,          // REQUIRED for HTTPS
-  sameSite: 'None',      // REQUIRED for cross-site cookies
-  domain: '.vercel.app', // Allows subdomains like dev-tinder-frontend-psi.vercel.app
-  httpOnly: true,        // Recommended for security (blocks JS access)
-  path: '/',             // Available on all paths
+  secure: true,          // Required for HTTPS
+      sameSite: 'None',      // Required for cross-site
+      domain: 'dev-tinder-frontend-psi.vercel.app', // Your specific domain
+      httpOnly: true,        // Security best practice
+      path: '/',            // Available on all paths
 }); 
      
       res.status(201).json({message:"User registered successfully " ,data:user,success:true});
@@ -80,11 +80,11 @@ authRouter.post('/login',async(req,res)=>{
   
    res.cookie('token', token, {
     expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
-    secure: true,          // REQUIRED for HTTPS
-    sameSite: 'None',      // REQUIRED for cross-site cookies
-    domain: '.vercel.app', // Allows subdomains like dev-tinder-frontend-psi.vercel.app
-    httpOnly: true,        // Recommended for security (blocks JS access)
-    path: '/',             // Available on all paths
+    secure: true,          // Required for HTTPS
+    sameSite: 'None',      // Required for cross-site
+    domain: 'dev-tinder-frontend-psi.vercel.app', // Your specific domain
+    httpOnly: true,        // Security best practice
+    path: '/',          // Available on all paths
   });
     res.status(200).json({
       success:true,
@@ -102,10 +102,10 @@ authRouter.post('/login',async(req,res)=>{
   })
 authRouter.post('/logout',(req,res)=>{
   res.clearCookie('token', {
-    secure: true,      // Must match the cookie's original setting
-    sameSite: 'None',  // Must match the cookie's original setting
-    domain: '.vercel.app', // Replace with your production domain
-    httpOnly: true,    // Must match the cookie's original setting
+    secure: true,          // Required for HTTPS
+    sameSite: 'None',      // Required for cross-site
+    domain: 'dev-tinder-frontend-psi.vercel.app', // Your specific domain
+    httpOnly: true,        // Security best practice
     path: '/',         // Must match if originally set
   });
     res.status(200).json({
