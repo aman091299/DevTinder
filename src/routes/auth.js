@@ -41,7 +41,7 @@ authRouter.post("/signup", async (req, res) => {
   expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000) ,
   httpOnly: true,
   secure: true,
-  sameSite: "Lax", // Only use with HTTPS
+  sameSite: "None",
   secure: true
     })     
      
@@ -82,7 +82,7 @@ authRouter.post('/login',async(req,res)=>{
       expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000) ,
       httpOnly: true,
       secure: true,
-      sameSite: "Lax", // Only use with HTTPS
+      sameSite: "None",
       secure: true
     })
     res.status(200).json({
