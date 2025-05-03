@@ -104,7 +104,7 @@ authRouter.post('/logout',(req,res)=>{
   res.clearCookie('token', {
     secure: true,          // Required for HTTPS
     sameSite: 'None',      // Required for cross-site
-    domain: 'dev-tinder-frontend-psi.vercel.app', // Your specific domain
+    domain: 'https://dev-tinder-frontend-psi.vercel.app', // Your specific domain
     httpOnly: true,        // Security best practice
     path: '/',         // Must match if originally set
   });
