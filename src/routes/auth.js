@@ -18,9 +18,9 @@ authRouter.post("/signup", async (req, res) => {
       })
     ) {
       return res
-        .status(500)
-        .send(
-          "Password is not strong enough. It must contain at least 8 characters, a symbol, a number, and both uppercase and lowercase letters."
+        .status(400)
+        .json({success: false,message:"Password is not strong enough. It must contain at least 8 characters, a symbol, a number, and both uppercase and lowercase letters."}
+          
         );
     }
 
@@ -61,18 +61,19 @@ authRouter.post("/login", async (req, res) => {
 
   try {
     if (!emailId) {
-     return  res.status(500).send("Emailid is required");
+     return  res.status(400).json({success: false,message:"Emailid is required"})
     }
     if (!password) {
-     return res.status(500).send("Password is required");
+     return res.status(400).json({success: false,message:"Password is required"});
     }
     const user = await User.findOne({ emailId: emailId });
     if (!user) {
-     return res.status(500).send("Invalid Credential");
+     return res.status(400).json({message:"Invalid Credential",  success: false});
     }
     const isMatchPassword = await user.validatePassword(password);
     if (!isMatchPassword) {
-     return res.status(500).send("Invalid Credential");
+     return res.status(400).json({  success: false,
+      message:"Invalid Credential"});
     }
 
     const { password: pwd, ...userWithoutPassword } = user._doc;
