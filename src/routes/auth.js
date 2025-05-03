@@ -36,7 +36,15 @@ authRouter.post("/signup", async (req, res) => {
       const token= await user.getJwt();
    
       //setting the cookie to the browser having token
-      res.cookie("token",token, { expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000) ,https:true})
+ //setting the cookie to the browser having token
+  res.cookie("token",token, { 
+  expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000) ,
+  https:true,
+  path: "/",
+  sameSite: "None", // Only use with HTTPS
+  secure: true
+    })     
+     
       res.status(201).json({message:"User registered successfully " ,data:user,success:true});
     } catch (error) {
       console.error("User insertion fail ", error);
