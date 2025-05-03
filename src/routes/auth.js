@@ -39,10 +39,10 @@ authRouter.post("/signup", async (req, res) => {
  //setting the cookie to the browser having token
   res.cookie("token",token, { 
   expires: new Date(Date.now() +  (60 * 1000)) ,
-  secure: false,
-      sameSite: "Lax",
-      httpOnly: false,
-      domain: "localhost"
+  secure: true,
+  sameSite: "None",
+  httpOnly: false,
+   domain: "localhost"
     })     
      
       res.status(201).json({message:"User registered successfully " ,data:user,success:true});
@@ -80,8 +80,8 @@ authRouter.post('/login',async(req,res)=>{
     //setting the cookie to the browser having token
     res.cookie("token",token, { 
       expires: new Date(Date.now() +(60 * 1000)) ,
-      secure: false,
-      sameSite: "Lax",
+      secure: true,
+      sameSite: "None",
       httpOnly: false,
       domain: "localhost"
 
@@ -102,10 +102,9 @@ authRouter.post('/login',async(req,res)=>{
   })
 authRouter.post('/logout',(req,res)=>{
     res.clearCookie('token',{ secure: true,
-      secure: false,
-      sameSite: "Lax",
+      sameSite: "None",
       httpOnly: false,
-      domain: "localhost"
+       domain: "localhost"
     })
     res.status(200).json({
         message:"User logout sucessfully"
