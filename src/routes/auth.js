@@ -84,7 +84,7 @@ authRouter.post("/login", async (req, res) => {
       secure: true,
       sameSite: "None",
       httpOnly: true, 
-      domain: '.vercel.app', 
+     
     });
    return res.status(200).json({
       success: true,
@@ -103,7 +103,7 @@ authRouter.post("/logout", (req, res) => {
     secure: true,
     sameSite: "None",
     httpOnly: true,
-    domain: '.vercel.app', 
+
   });
 return  res.status(200).json({
     message: "User logout sucessfully",
