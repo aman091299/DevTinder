@@ -41,7 +41,7 @@ authRouter.post("/signup", async (req, res) => {
   expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
   secure: true,          // Required for HTTPS
       sameSite: 'None',      // Required for cross-site
-      domain: 'dev-tinder-frontend-psi.vercel.app', // Your specific domain
+      domain: 'https://dev-tinder-frontend-psi.vercel.app', // Your specific domain
       httpOnly: true,        // Security best practice
       path: '/',            // Available on all paths
 }); 
@@ -82,7 +82,7 @@ authRouter.post('/login',async(req,res)=>{
     expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
     secure: true,          // Required for HTTPS
     sameSite: 'None',      // Required for cross-site
-    domain: 'dev-tinder-frontend-psi.vercel.app', // Your specific domain
+    domain: 'https://dev-tinder-frontend-psi.vercel.app', // Your specific domain
     httpOnly: true,        // Security best practice
     path: '/',          // Available on all paths
   });
