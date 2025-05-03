@@ -12,7 +12,7 @@ require('dotenv').config()
 const app = express();
 
 const corsOptions = {
-  origin: ['http://localhost:3000','https://dev-tinder-frontend-psi.vercel.app',"https://devtinder-frontend-web.onrender.com"],
+  origin: ['http://localhost:3000','https://devtinder-frontend-web.onrender.com'],
   credentials: true,
 };
 
