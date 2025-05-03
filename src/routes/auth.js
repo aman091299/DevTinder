@@ -37,13 +37,14 @@ authRouter.post("/signup", async (req, res) => {
    
       //setting the cookie to the browser having token
  //setting the cookie to the browser having token
-  res.cookie("token",token, { 
-  expires: new Date(Date.now() +  (60 * 1000)) ,
-  secure: true,
-  sameSite: "None",
-  httpOnly: false,
-   domain: "localhost"
-    })     
+ res.cookie('token', token, {
+  expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+  secure: true,          // REQUIRED for HTTPS
+  sameSite: 'None',      // REQUIRED for cross-site cookies
+  domain: '.vercel.app', // Allows subdomains like dev-tinder-frontend-psi.vercel.app
+  httpOnly: true,        // Recommended for security (blocks JS access)
+  path: '/',             // Available on all paths
+}); 
      
       res.status(201).json({message:"User registered successfully " ,data:user,success:true});
     } catch (error) {
@@ -77,15 +78,14 @@ authRouter.post('/login',async(req,res)=>{
  
    const token= await user.getJwt();
   
-    //setting the cookie to the browser having token
-    res.cookie("token",token, { 
-      expires: new Date(Date.now() +(60 * 1000)) ,
-      secure: true,
-      sameSite: "None",
-      httpOnly: false,
-      domain: "localhost"
-
-    })
+   res.cookie('token', token, {
+    expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
+    secure: true,          // REQUIRED for HTTPS
+    sameSite: 'None',      // REQUIRED for cross-site cookies
+    domain: '.vercel.app', // Allows subdomains like dev-tinder-frontend-psi.vercel.app
+    httpOnly: true,        // Recommended for security (blocks JS access)
+    path: '/',             // Available on all paths
+  });
     res.status(200).json({
       success:true,
       data:userWithoutPassword
@@ -101,11 +101,13 @@ authRouter.post('/login',async(req,res)=>{
 
   })
 authRouter.post('/logout',(req,res)=>{
-    res.clearCookie('token',{ secure: true,
-      sameSite: "None",
-      httpOnly: false,
-       domain: "localhost"
-    })
+  res.clearCookie('token', {
+    secure: true,      // Must match the cookie's original setting
+    sameSite: 'None',  // Must match the cookie's original setting
+    domain: '.vercel.app', // Replace with your production domain
+    httpOnly: true,    // Must match the cookie's original setting
+    path: '/',         // Must match if originally set
+  });
     res.status(200).json({
         message:"User logout sucessfully"
     })
