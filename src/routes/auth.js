@@ -36,7 +36,7 @@ authRouter.post("/signup", async (req, res) => {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
       secure: true,
       sameSite: "None",
-      httpOnly: true,
+      httpOnly: false,
     });
 
    return res
@@ -84,7 +84,7 @@ authRouter.post("/login", async (req, res) => {
       expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
       secure: true,
       sameSite: "None",
-      httpOnly: true, 
+      httpOnly: false, 
      
     });
    return res.status(200).json({
@@ -103,7 +103,7 @@ authRouter.post("/logout", (req, res) => {
   res.clearCookie("token", {
     secure: true,
     sameSite: "None",
-    httpOnly: true,
+    httpOnly: false,
 
   });
 return  res.status(200).json({
