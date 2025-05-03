@@ -41,8 +41,8 @@ authRouter.post("/signup", async (req, res) => {
   expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
   secure: true,          // Required for HTTPS
       sameSite: 'None',      // Required for cross-site
-      domain: 'https://dev-tinder-frontend-psi.vercel.app', // Your specific domain
-      httpOnly: true,        // Security best practice
+      domain: 'dev-tinder-frontend-psi.vercel.app', // Your specific domain
+      httpOnly: false,        // Security best practice
       path: '/',            // Available on all paths
 }); 
      
@@ -82,8 +82,8 @@ authRouter.post('/login',async(req,res)=>{
     expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 hours
     secure: true,          // Required for HTTPS
     sameSite: 'None',      // Required for cross-site
-    domain: 'https://dev-tinder-frontend-psi.vercel.app', // Your specific domain
-    httpOnly: true,        // Security best practice
+    domain: 'dev-tinder-frontend-psi.vercel.app', // Your specific domain
+    httpOnly: false,        // Security best practice
     path: '/',          // Available on all paths
   });
     res.status(200).json({
@@ -104,8 +104,8 @@ authRouter.post('/logout',(req,res)=>{
   res.clearCookie('token', {
     secure: true,          // Required for HTTPS
     sameSite: 'None',      // Required for cross-site
-    domain: 'https://dev-tinder-frontend-psi.vercel.app', // Your specific domain
-    httpOnly: true,        // Security best practice
+    domain: 'dev-tinder-frontend-psi.vercel.app', // Your specific domain
+    httpOnly: false,        // Security best practice
     path: '/',         // Must match if originally set
   });
     res.status(200).json({

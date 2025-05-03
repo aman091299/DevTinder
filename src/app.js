@@ -12,11 +12,15 @@ require('dotenv').config()
 const app = express();
 
 const corsOptions = {
-  origin: ['http://localhost:3000','https://dev-tinder-frontend-psi.vercel.app','https://devtinder-frontend-web.onrender.com'],
+  origin: [
+    'http://localhost:3000',
+    'https://dev-tinder-frontend-psi.vercel.app',
+    'https://devtinder-frontend-web.onrender.com'
+  ],
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 };
-
-app.use(cors(corsOptions));
 
 app.use(cookieParser())
 app.use(express.json());
