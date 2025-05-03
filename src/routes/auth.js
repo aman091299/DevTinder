@@ -99,7 +99,10 @@ authRouter.post('/login',async(req,res)=>{
 
   })
 authRouter.post('/logout',(req,res)=>{
-    res.clearCookie('token')
+    res.clearCookie('token',{ secure: true,
+      sameSite: "None",
+      httpOnly: false,
+    })
     res.status(200).json({
         message:"User logout sucessfully"
     })
