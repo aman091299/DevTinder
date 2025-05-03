@@ -39,7 +39,7 @@ authRouter.post("/signup", async (req, res) => {
       httpOnly: true,
     });
 
-    res
+   return res
       .status(201)
       .json({
         message: "User registered successfully ",
@@ -61,18 +61,18 @@ authRouter.post("/login", async (req, res) => {
 
   try {
     if (!emailId) {
-      res.status(500).send("Emailid is required");
+     return  res.status(500).send("Emailid is required");
     }
     if (!password) {
-      res.status(500).send("Password is required");
+     return res.status(500).send("Password is required");
     }
     const user = await User.findOne({ emailId: emailId });
     if (!user) {
-      res.status(500).send("Invalid Credential");
+     return res.status(500).send("Invalid Credential");
     }
     const isMatchPassword = await user.validatePassword(password);
     if (!isMatchPassword) {
-      res.status(500).send("Invalid Credential");
+     return res.status(500).send("Invalid Credential");
     }
 
     const { password: pwd, ...userWithoutPassword } = user._doc;
@@ -85,7 +85,7 @@ authRouter.post("/login", async (req, res) => {
       sameSite: "None",
       httpOnly: true,
     });
-    res.status(200).json({
+   return res.status(200).json({
       success: true,
       data: userWithoutPassword,
     });
@@ -103,7 +103,7 @@ authRouter.post("/logout", (req, res) => {
     sameSite: "None",
     httpOnly: true,
   });
-  res.status(200).json({
+return  res.status(200).json({
     message: "User logout sucessfully",
   });
 });
