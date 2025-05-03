@@ -42,7 +42,6 @@ authRouter.post("/signup", async (req, res) => {
  
   secure: true,
   sameSite: "None",
-  secure: true
     })     
      
       res.status(201).json({message:"User registered successfully " ,data:user,success:true});
@@ -83,7 +82,7 @@ authRouter.post('/login',async(req,res)=>{
    
       secure: true,
       sameSite: "None",
-      secure: true
+
     })
     res.status(200).json({
       success:true,
