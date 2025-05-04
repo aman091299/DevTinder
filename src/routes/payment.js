@@ -94,7 +94,7 @@ if (webhookBody.event ==='payment.captured'){
   return   res.status(200).json({message:'Payment Verify Successfully'})
   
 }
-if(webhookBody.event='payment.failed'){
+if(webhookBody.event==='payment.failed'){
     console.log("WEBHOOK payment fail");
    
     return res.status(200).json({message:'WEBHOOK payment fail'})
