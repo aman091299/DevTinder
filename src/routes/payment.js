@@ -88,6 +88,7 @@ if (webhookBody.event ='payment.captured'){
     user.membershipType=notes.membershipType;
     await payment.save();
     await user.save();
+    console.log("WEBHOOK payment captured 3",user,payment);
   return   res.status(200).json({message:'Payment Verify Successfully'})
   
 }
