@@ -53,7 +53,7 @@ paymentRouter.post('/payment/create/order',userAuth,async(req,res)=>{
     }
 })
 
-paymentRouter.post('',async(req,res)=>{
+paymentRouter.post('/payment/webhook',async(req,res)=>{
     // validatePaymentVerification({"order_id": razorpayOrderId, "payment_id": razorpayPaymentId }, signature, secret);
 const webhookBody=req.body;
 const webhookSignature=req.headers['x-razorpay-signature'];
