@@ -80,10 +80,10 @@ if(!isWebhookValid){
      console.log("WEBHOOK Payment save",payment)
 
 if (webhookBody.event ='payment.captured'){
-    console.log("WEBHOOK payment captured");
+    console.log("WEBHOOK payment captured 1",notes.user_id);
     payment.membershipType=notes.membershipType;
     const user=await User.findById(notes.user_id);
-    console.log("WEBHOOK payment captured",user);
+    console.log("WEBHOOK payment captured 2",user);
     user.isPremium=true;
     user.membershipType=notes.membershipType;
     await payment.save();
