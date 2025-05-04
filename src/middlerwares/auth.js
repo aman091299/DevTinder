@@ -6,12 +6,12 @@ const userAuth=async(req,res,next)=>{
  try {
     const {token} =req.cookies;
     if(!token){
-      res.status(400).json({sucess:false,message:"Token is not there"})
+      res.status(401).json({sucess:false,message:"Token is not there"})
       }
       var decode =jwt.verify(token,process.env.SECREAT_KEY);
       const user=await User.findById(decode?._id);
       if(!user){
-         res.status(400).json({sucess:false,message:"No user founded"})
+         res.status(401).json({sucess:false,message:"No user founded"})
       }
       req.user=user;
    next();

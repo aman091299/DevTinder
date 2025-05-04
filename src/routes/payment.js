@@ -118,9 +118,9 @@ paymentRouter.post("/payment/webhook", async (req, res) => {
 paymentRouter.get('/premium/verify',userAuth,async(req,res)=>{
   try {
     const user=req.user;
-    res.status(200).json({success:true,premium:user.isPremium});
+    return res.status(200).json({success:true,premium:user.isPremium});
   } catch (error) {
-    res.status(500).json({success:false,message:"Error in premium verify"+error});
+    return res.status(500).json({success:false,message:"Error in premium verify"+error});
   }
 
 })
