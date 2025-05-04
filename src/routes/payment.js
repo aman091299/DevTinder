@@ -60,12 +60,11 @@ paymentRouter.post('/payment/create/order',userAuth,async(req,res)=>{
 })
 
 paymentRouter.post('/payment/webhook',async(req,res)=>{
-    console.log("WEBHOOK Inside1",req.body);
+    console.log("WEBHOOK Recieved");
     // validatePaymentVerification({"order_id": razorpayOrderId, "payment_id": razorpayPaymentId }, signature, secret);
 const webhookBody=req.body;
 const webhookSignature=req.headers['x-razorpay-signature'];
-console.log("WEBHOOK Inside2",process.env.WEBHOOK_SECREAT_KEY);
-console.log("WEBHOOK Inside3",webhookBody?.payload?.payment);
+
 try{
  const isWebhookValid  = validateWebhookSignature(JSON.stringify(webhookBody), webhookSignature, process.env.WEBHOOK_SECREAT_KEY)
     
@@ -76,21 +75,25 @@ if(!isWebhookValid){
      const {order_id, notes ,status}= webhookBody.payload.payment.entity;
      console.log("WEBHOOK orders details",order_id,notes,status);
 
-     const payment=await Payment.findOne({orderId:order_id});
-     payment.status=status;
-     await payment.save();
+     const payment=await Payment.findOneAndUpdate({orderId:order_id},{status:status},{new:true});
+     if (!payment) {
+        console.error("Payment not found for order:", order_id);
+        return res.status(404).json({ message: 'Payment record not found' });
+    }
      console.log("WEBHOOK Payment save",payment)
 
 if (webhookBody.event ==='payment.captured'){
-    console.log("WEBHOOK payment captured 1",notes.user_id);
     payment.membershipType=notes.membershipType;
-    const user=await User.findById(notes.user_id);
+
+    const user=await User.findByIdAndUpdate(notes.user_id,{isPremium:true,membershipType:notes.membershipType},{new:true});
+    if (!user) {
+        console.error("user not found for user:", notes.user_id);
+        return res.status(404).json({ message: 'user record not found' });
+    }
     console.log("WEBHOOK payment captured 2",user);
-    user.isPremium=true;
-    user.membershipType=notes.membershipType;
     await payment.save();
-    await user.save();
-    console.log("WEBHOOK payment captured 3",user,payment);
+     console.log("WEBHOOK payment captured 3",user,payment);
+     console.error("Payment not found for order:", order_id);
   return   res.status(200).json({message:'Payment Verify Successfully'})
   
 }
