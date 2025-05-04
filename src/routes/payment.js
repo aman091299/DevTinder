@@ -1,10 +1,11 @@
-const express=require('express');
-const paymentRouter=express.Router();
 const instance=require('../utils/rajorpay');
 const {membership}=require('../utils/constant');
 const { userAuth } = require('../middlerwares/auth');
 const Payment=require('../models/payment');
 var { validatePaymentVerification, validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils');
+
+const express=require('express');
+const paymentRouter=express.Router();
 
 paymentRouter.post('/payment/create/order',userAuth,async(req,res)=>{
     try {     

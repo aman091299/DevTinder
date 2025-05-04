@@ -1,10 +1,10 @@
-
-const express=require('express')
-const connectionRouter=express.Router();
 const {  userAuth } = require("../middlerwares/auth");
 const ConnectionRequest=require("../models/connectionRequest");
 const User=require('../models/user')
 const mongoose=require('mongoose')
+
+const express=require('express')
+const connectionRouter=express.Router();
 
 //here status can be interested or ignored
 connectionRouter.post('/request/send/:status/:userId',userAuth,async (req,res)=>{
