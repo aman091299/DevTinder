@@ -64,7 +64,7 @@ paymentRouter.post('/payment/webhook',async(req,res)=>{
 const webhookBody=req.body;
 const webhookSignature=req.headers['x-razorpay-signature'];
 
-console.log("WEBHOOK Inside");
+console.log("WEBHOOK Inside",webhookBody.payload.payment);
 try{
  const isWebhookValid  = validateWebhookSignature(JSON.stringify(webhookBody), webhookSignature, process.env.WEBHOOK_SECREAT_KEY)
     
@@ -83,8 +83,9 @@ if (webhookBody.event ='payment.captured'){
     console.log("WEBHOOK payment captured");
     payment.membershipType=notes.membershipType;
     const user=await User.findById(notes.user_id);
+    console.log("WEBHOOK payment captured",user);
     user.isPremium=true;
-    user.membershipType=notes.membership;
+    user.membershipType=notes.membershipType;
     await payment.save();
     await user.save();
   return   res.status(200).json({message:'Payment Verify Successfully'})
@@ -97,6 +98,7 @@ if(webhookBody.event='payment.failed'){
 }
 }
 catch(err){
+    console.log("WEBHOOK signature verification failed");
     console.error("Webhook signature verification failed",err);
     return res.status(400).json({message:'Invalid Signature'})
 }
