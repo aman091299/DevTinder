@@ -1,4 +1,3 @@
-require('dotenv').config()
 const Razorpay = require('razorpay')
 
 try{
