@@ -60,15 +60,17 @@ paymentRouter.post('/payment/create/order',userAuth,async(req,res)=>{
 })
 
 paymentRouter.post('/payment/webhook',async(req,res)=>{
+    console.log("WEBHOOK Inside1",req.body);
     // validatePaymentVerification({"order_id": razorpayOrderId, "payment_id": razorpayPaymentId }, signature, secret);
 const webhookBody=req.body;
 const webhookSignature=req.headers['x-razorpay-signature'];
-
-console.log("WEBHOOK Inside",webhookBody.payload.payment);
+console.log("WEBHOOK Inside2");
+console.log("WEBHOOK Inside3",webhookBody?.payload?.payment);
 try{
  const isWebhookValid  = validateWebhookSignature(JSON.stringify(webhookBody), webhookSignature, process.env.WEBHOOK_SECREAT_KEY)
     
 if(!isWebhookValid){
+    console.log("WEBHOOK Invalid");
  return   res.status(400).json({message:'Invalid webhook Signature'})
 }
      const {order_id, notes ,status}= webhookBody.payload.payment.entity;
