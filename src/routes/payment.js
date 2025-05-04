@@ -2,6 +2,7 @@ const instance=require('../utils/rajorpay');
 const {membership}=require('../utils/constant');
 const { userAuth } = require('../middlerwares/auth');
 const Payment=require('../models/payment');
+const User=require('../models/user');
 var { validatePaymentVerification, validateWebhookSignature } = require('razorpay/dist/utils/razorpay-utils');
 
 const express=require('express');
@@ -21,7 +22,7 @@ paymentRouter.post('/payment/create/order',userAuth,async(req,res)=>{
               firstName:user?.firstName,
               lastName:user?.lastName,
               user_id:user._id,
-              membership:type,
+              membershipType:type,
             },
           };
        instance.orders.create(options, async function(err, order) {
@@ -39,12 +40,17 @@ paymentRouter.post('/payment/create/order',userAuth,async(req,res)=>{
                 currency:currency,
                 status:status,
                 userId:user._id,
+                notes:{
+                    firstName:notes.firstName,
+                    lastName:notes.lastName,
+                    membershipType:notes.membershipType,
+                }
             })
            await createPayment.save();
            return res.status(200).json({
                 message:'Order created succssfully',
                 success:true,
-                data:order,
+                data:createPayment,
                 key:process.env.RAZORPAY_KEY_ID
             })
           });
@@ -58,14 +64,41 @@ paymentRouter.post('/payment/webhook',async(req,res)=>{
 const webhookBody=req.body;
 const webhookSignature=req.headers['x-razorpay-signature'];
 
-console.log("inside webhook body" + JSON.stringify(webhookBody) +'webhook signature' + webhookSignature,process.env.WEBHOOK_SECREAT_KEY);
+console.log("WEBHOOK Inside");
 try{
-    validateWebhookSignature(JSON.stringify(webhookBody), webhookSignature, process.env.WEBHOOK_SECREAT_KEY)
-     res.status(200).json({message:"Webhook Signature Verify"})
+ const isWebhookValid  = validateWebhookSignature(JSON.stringify(webhookBody), webhookSignature, process.env.WEBHOOK_SECREAT_KEY)
+    
+if(!isWebhookValid){
+ return   res.status(400).json({message:'Invalid webhook Signature'})
+}
+     const {order_id, notes ,status}= webhookBody.payload.payment.entity;
+     console.log("WEBHOOK orders details",order_id,notes,status);
+
+     const payment=await Payment.findOne({orderId:order_id});
+     payment.status=status;
+     await payment.save();
+     console.log("WEBHOOK Payment save",payment)
+
+if (webhookBody.event ='payment.captured'){
+    console.log("WEBHOOK payment captured");
+    payment.membershipType=notes.membershipType;
+    const user=await User.findById(notes.user_id);
+    user.isPremium=true;
+    user.membershipType=notes.membership;
+    await payment.save();
+    await user.save();
+  return   res.status(200).json({message:'Payment Verify Successfully'})
+  
+}
+if(webhookBody.event='payment.failed'){
+    console.log("WEBHOOK payment fail");
+   
+    return res.status(200).json({message:'WEBHOOK payment fail'})
+}
 }
 catch(err){
     console.error("Webhook signature verification failed",err);
-    res.status(400).json({message:'Invalid Signature'})
+    return res.status(400).json({message:'Invalid Signature'})
 }
 })
 

@@ -20,15 +20,22 @@ const paymentSchema=new mongoose.Schema({
         type:String,
         required:true,
     },
-    membership:{
+    membershipType:{
         type:String,
     },
-    isPremium:{
-        type:Boolean,
-        default:false,
-        
-    },currency:{
+    currency:{
         type:String,
+    },
+    notes:{
+        firstName:{
+            type:String,
+        },
+        lastName:{
+            type:String,
+        },
+        membershipType:{
+            type:String,
+        }
     }
 
 },{timestamps:true});
