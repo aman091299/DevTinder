@@ -102,7 +102,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
       connections: connections,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status(400).json({success: false,
       message: "Error  in connection accepted requests" + error.message,
     });
   }

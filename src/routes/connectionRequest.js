@@ -16,17 +16,20 @@ connectionRouter.post('/request/send/:status/:userId',userAuth,async (req,res)=>
         const fromUserId=req.user;
         const ALLOWED_VALUES=['interested','ignored'];
          if(!ALLOWED_VALUES.includes(status)){
-            throw new Error("This status value is not allowed");
+         
+            return  res.status(201).json({success: false,message:"This status value is not allowed"});
          }
   
          // Validate userId format
      if (!mongoose.Types.ObjectId.isValid(userId)) {
-              throw new Error("Invalid userId format");
+            
+              return  res.status(201).json({success: false,message:"Invalid user id format"});
          }
          const  checkUserExist=await User.findById(userId);
 
          if(!checkUserExist){
-            throw new Error("User does not exit in DB")
+      
+            return  res.status(201).json({success: false,message:"User does not exit in DB"});
          }
         const connectionRequestAlreadyExist=await ConnectionRequest.findOne({$or:
             [{fromUserId:fromUserId._id,toUserId:userId},{fromUserId:userId,toUserId:fromUserId._id}]
@@ -34,7 +37,8 @@ connectionRouter.post('/request/send/:status/:userId',userAuth,async (req,res)=>
     
 
         if(connectionRequestAlreadyExist){
-            throw new Error ("Connection already exist");
+  
+            return  res.status(201).json({success: false,message:"Connection already exist"});
         }
         
          const connectionRequestInfo=new ConnectionRequest({
@@ -49,7 +53,7 @@ connectionRouter.post('/request/send/:status/:userId',userAuth,async (req,res)=>
         });
     }
     catch(error){
-        res.status(400).send("Error in connection establishing " + error.message);
+        res.status(400).json({success: false,message:"Error in connection establishing " + error.message});
     }
   
   })
@@ -66,11 +70,13 @@ connectionRouter.post('/request/review/:status/:requestId',userAuth,async(req,re
 
     const ALLOWED_FEILD=['accepted','rejected'];
     if(!ALLOWED_FEILD.includes(status)){
-             throw new Error("Invalid status, status can only be accepted or ignored")
+
+             return  res.status(201).json({success: false,message:"Invalid status, status can only be accepted or ignored"});
     }
           // Validate userId format
     if (!mongoose.Types.ObjectId.isValid(requestId)) {
-            throw new Error("Invalid userId format");
+        return  res.status(201).json({success: false,message:"Invalid user id format"});
+
        }
 
 
@@ -82,7 +88,9 @@ connectionRouter.post('/request/review/:status/:requestId',userAuth,async(req,re
      .populate('toUserId',['firstName','lastName'])
 
      if(!isConnectionRequestExist){
-        throw new Error("connection  request interested does not exist")
+      
+        return  res.status(201).json({success: false,message:" connection  request interested does not exist"});
+
      }
      isConnectionRequestExist.status=status;
      await isConnectionRequestExist.save();
@@ -93,7 +101,7 @@ connectionRouter.post('/request/review/:status/:requestId',userAuth,async(req,re
     })
     }
     catch(error){
-        res.status(400).json({
+        res.status(400).json({success: false,
             message:"Error in accepting or rejecting request" + error
         })
     }

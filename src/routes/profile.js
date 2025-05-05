@@ -17,7 +17,7 @@ profileRouter.get('/profile/view',userAuth,async(req,res)=>{
         })
       
     } catch (error) {
-        res.status(400).json({
+        res.status(400).json({success: false,
             message:"Error in viewing Profile " + error
         })
     }
@@ -30,11 +30,12 @@ profileRouter.patch('/profile/edit',userAuth,async(req,res)=>{
    try {
     const {emailId,password}=req.body;
     if(emailId){
-        throw new Error("EmailId cannot be updated")
+        return  res.status(201).json({message:"Email id cannot be updated"});
+
     }
     if(password){
-        throw new Error("Password cannot be updated")
-    }
+        return  res.status(201).json({message:"Password cannot be updated"});
+}
 
     validate(req);
 
@@ -47,6 +48,7 @@ profileRouter.patch('/profile/edit',userAuth,async(req,res)=>{
     
    } catch (error) {
     res.status(400).json({
+        success: false,
         message:"Error while updating profile " + error
     })
    }
@@ -62,16 +64,22 @@ profileRouter.patch('/profile/password',userAuth,async(req,res)=>{
    const {newPassword,confirmNewPassword}=req.body;
 
    if(!newPassword || !confirmNewPassword){
-    throw new Error (" New Password and Confirm New Password required");
+    return  res.status(201).json({success: false,message:" New Password and Confirm New Password required"});
+
    }
    if(await userInfo.validatePassword(newPassword)){
-     throw new Error ("You used this password recently. Please choose a different one.")
+   
+     return  res.status(201).json({success: false,message:" You used this password recently. Please choose a different one."});
+
    }
     if(!validator.isStrongPassword(newPassword)){
-        throw new Error("Password is not strong enough. It must contain at least 8 characters, a symbol, a number, and both uppercase and lowercase letters.");
+
+        return  res.status(201).json({success: false,message:"Password is not strong enough. It must contain at least 8 characters, a symbol, a number, and both uppercase and lowercase letters."});
+
     }
     if(newPassword !== confirmNewPassword){
-        throw new Error("Password don't Match");
+        return  res.status(201).json({success: false,message:"Password does not match"});
+
     }
 
     const hashPassword=await bcrypt.hash(newPassword,10);
@@ -81,6 +89,7 @@ profileRouter.patch('/profile/password',userAuth,async(req,res)=>{
     })
   } catch (error) {
     res.status(400).json({
+        success: false,
         message:"Error in update user password " + error.message
     })
   }

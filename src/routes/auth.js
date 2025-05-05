@@ -3,26 +3,14 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const validator = require("validator");
 const authRouter = express.Router();
+const SignUpValidation=require('../utils/signUpValidation')
 
 authRouter.post("/signup", async (req, res) => {
   const { password } = req.body;
   const userInfo = req.body;
   try {
-    if (
-      !validator.isStrongPassword(password, {
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
-      })
-    ) {
-      return res
-        .status(201)
-        .json({success: false,message:"Password is not strong enough. It must contain at least 8 characters, a symbol, a number, and both uppercase and lowercase letters."}
-          
-        );
-    }
+    SignUpValidation(req);
+    
 
     const hashPassword = await bcrypt.hash(password, 10);
     userInfo.password = hashPassword;
@@ -61,7 +49,7 @@ authRouter.post("/login", async (req, res) => {
 
   try {
     if (!emailId) {
-     return  res.status(210).json({success: false,message:"Emailid is required"})
+     return  res.status(201).json({success: false,message:"Emailid is required"})
     }
     if (!password) {
      return res.status(201).json({success: false,message:"Password is required"});
@@ -107,6 +95,7 @@ authRouter.post("/logout", (req, res) => {
 
   });
 return  res.status(200).json({
+  success: true,
     message: "User logout sucessfully",
   });
 });
