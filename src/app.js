@@ -10,7 +10,7 @@ const connectionRouter=require('./routes/connectionRequest');
 const userRouter=require('./routes/user');
 const profileRouter=require('./routes/profile');
 const paymentRouter=require('./routes/payment');
-
+const chatRouter=require('./routes/chat')
 const app = express();
 const server=http.createServer(app);
 intilizedSocket(server);
@@ -27,7 +27,7 @@ app.use('/',connectionRouter);
 app.use('/',profileRouter);
 app.use('/',userRouter);
 app.use('/',paymentRouter);
-
+app.use('/',chatRouter);
 
 
 

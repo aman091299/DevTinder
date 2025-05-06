@@ -1,6 +1,8 @@
 
 const socket=require('socket.io');
-const crypto=require('crypto')
+const crypto=require('crypto');
+const Chat=require('../models/chat');
+const { findOne } = require('../models/user');
 const corsOptions = {
     origin: ['http://localhost:3000','https://dev-tinder-frontend-psi.vercel.app','https://devtinder-frontend-web.onrender.com'],
     credentials: true,
@@ -23,10 +25,33 @@ const intilizedSocket = (server)=>{
             console.log(firstName,"join room",roomId);
             socket.join(roomId);
         })
-        socket.on('sendMessage',({userId,targetUserId,text,firstName,photoUrl})=>{
+        socket.on('sendMessage',async({userId,targetUserId,text,firstName,photoUrl})=>{
+           try {
             const roomId=getSecretRoomId({userId,targetUserId});
-            console.log("sendMessage",roomId)
-            io.to(roomId).emit('messageRecieved',{text,firstName,photoUrl});
+            console.log("sendMessage join roomId",roomId)
+
+            let chat=await Chat.findOne({participantes:
+                {$all:[userId,targetUserId]}
+            })
+          
+            if(!chat){
+            chat= new Chat({
+                     participantes:[userId,targetUserId],
+                     messages:[],
+                })
+              
+            }
+           
+            chat.messages.push({
+                text,senderId:userId
+            })
+            await chat.save()
+    
+            io.to(roomId).emit('messageRecieved',{text,firstName,photoUrl,userId});
+           } catch (error) {
+            console.log("Error in socket",error)
+           
+           }
         })
     })
 
