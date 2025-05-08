@@ -1,7 +1,7 @@
 
 const validator = require("validator");
 
-const SignUpValidation=(req)=>{
+const SignUpValidation=(req,res)=>{
   const {firstName,lastName,emailId,password}=req.body;
 
 if(!firstName && !lastName){

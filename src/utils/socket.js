@@ -12,7 +12,7 @@ const corsOptions = {
   return crypto.createHash('sha256').update([userId ,targetUserId].sort().join('_')).digest('hex');
  }
 const intilizedSocket = (server)=>{
-  
+        console.log("inside socket")
     const io=socket(server,{cors:corsOptions });
    
     io.on('connection',(socket)=>{

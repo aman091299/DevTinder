@@ -9,7 +9,7 @@ authRouter.post("/signup", async (req, res) => {
   const { password } = req.body;
   const userInfo = req.body;
   try {
-    SignUpValidation(req);
+    SignUpValidation(req,res);
     
 
     const hashPassword = await bcrypt.hash(password, 10);
