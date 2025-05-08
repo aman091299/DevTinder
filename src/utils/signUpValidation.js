@@ -15,7 +15,8 @@ if(!firstName && !lastName){
     return  res.status(201).json({success: false,message:"Last name should be between 3 to 10 charactor only"});
     }
 
-    if(!emailId){
+    if(!validator.isEmail(emailId)){
+         
         return res.status(201).json({success: false,message:"email id is required"});
 
     }
