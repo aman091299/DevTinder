@@ -6,12 +6,15 @@ const authRouter = express.Router();
 const SignUpValidation=require('../utils/signUpValidation')
 
 authRouter.post("/signup", async (req, res) => {
-  const { password } = req.body;
+  const { emailId,password } = req.body;
   const userInfo = req.body;
   try {
     SignUpValidation(req,res);
     
-
+    const userEmail = await User.findOne({ emailId: emailId });
+    if (!userEmail) {
+     return res.status(201).json({message:"User Already exist please login",  success: false});
+    }
     const hashPassword = await bcrypt.hash(password, 10);
     userInfo.password = hashPassword;
     //creating a new instance of User model
