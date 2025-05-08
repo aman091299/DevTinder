@@ -7,12 +7,13 @@ const SignUpValidation=require('../utils/signUpValidation')
 
 authRouter.post("/signup", async (req, res) => {
   const { emailId,password } = req.body;
+  console.log('emailId',emailId);
   const userInfo = req.body;
   try {
     SignUpValidation(req,res);
     
     const userEmail = await User.findOne({ emailId: emailId });
-    if (!userEmail) {
+    if (userEmail) {
      return res.status(201).json({message:"User Already exist please login",  success: false});
     }
     const hashPassword = await bcrypt.hash(password, 10);
