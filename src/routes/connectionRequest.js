@@ -48,6 +48,7 @@ connectionRouter.post('/request/send/:status/:userId',userAuth,async (req,res)=>
          await  connectionRequestInfo.save();
            
         res.status(200).send({
+            success:true,
             message:'connection establish sucessfully',
             data:connectionRequestInfo
         });
@@ -96,6 +97,7 @@ connectionRouter.post('/request/review/:status/:requestId',userAuth,async(req,re
      await isConnectionRequestExist.save();
 
     res.status(200).json({
+        success:true,
         message:"request is " + status,
         data:isConnectionRequestExist
     })
